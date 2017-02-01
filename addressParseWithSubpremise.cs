@@ -79,7 +79,7 @@ else
                     zip = longName[8];
 
                     // Assign the extracted values to the verification fields
-                    // Context.Field("(In Development) Extracted Building Number").Text = bldgNum;
+                    // Context.Field("bldgNum").Text = bldgNum;
                     Context.Field("street1").Text = bldgNum + " " + street1;
                     Context.Field("street2").Text = street2;
                     Context.Field("town").Text = town;
@@ -87,28 +87,53 @@ else
                     Context.Field("state").Text = state;
                     Context.Field("zip").Text = zip;
 
-                    // Populate the original field to show the user that it worked
+                    // Populate the original field to show the user that it worked. Make sure to change the field name to whatever
+                    // name or alias is assigned to the field in question.
                     Context.Field("StreetAddress").Text = bldgNum + " " + street1 + ", " + street2 + ", " + town + ", " + county + ", " + state + " " + zip; 
                 }
                 else
                 {
-                    street2 = "";
-                    bldgNum = longName[0];
-                    street1 = longName[1];
-                    town = longName[2];
-                    county = longName[4];
-                    state = longName[5];
-                    zip = longName[7];
+                    // If the second half of the zip code exists at longName[7], check if it exists and adjust accordingly
+                    if (type[7].Contains("postal_code_suffix"))
+                    {
+                        street2 = "";
+                        bldgNum = longName[0];
+                        street1 = longName[1];
+                        town = longName[2];
+                        county = longName[3];
+                        state = longName[4];
+                        zip = longName[6];
 
-                    // Context.Field("(In Development) Extracted Building Number").Text = bldgNum;
-                    Context.Field("street1").Text = bldgNum + " " + street1;
-                    Context.Field("street2").Text = street2;
-                    Context.Field("town").Text = town;
-                    Context.Field("county").Text = county;
-                    Context.Field("state").Text = state;
-                    Context.Field("zip").Text = zip;
+                        // Context.Field("bldgNum").Text = bldgNum;
+                        Context.Field("street1").Text = bldgNum + " " + street1;
+                        Context.Field("street2").Text = street2;
+                        Context.Field("town").Text = town;
+                        Context.Field("county").Text = county;
+                        Context.Field("state").Text = state;
+                        Context.Field("zip").Text = zip;
 
-                    Context.Field("StreetAddress").Text = bldgNum + " " + street1 + ", " + town + ", " + county + ", " + state + " " + zip;
+                        Context.Field("StreetAddress").Text = bldgNum + " " + street1 + ", " + town + ", " + county + ", " + state + " " + zip;
+                    }
+                    else 
+                    {
+                        street2 = "";
+                        bldgNum = longName[0];
+                        street1 = longName[1];
+                        town = longName[2];
+                        county = longName[4];
+                        state = longName[5];
+                        zip = longName[7];
+
+                        // Context.Field("bldgNum").Text = bldgNum;
+                        Context.Field("street1").Text = bldgNum + " " + street1;
+                        Context.Field("street2").Text = street2;
+                        Context.Field("town").Text = town;
+                        Context.Field("county").Text = county;
+                        Context.Field("state").Text = state;
+                        Context.Field("zip").Text = zip;
+
+                        Context.Field("StreetAddress").Text = bldgNum + " " + street1 + ", " + town + ", " + county + ", " + state + " " + zip;
+                    } 
                 }
             }
             else
