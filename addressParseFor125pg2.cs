@@ -21,7 +21,15 @@ string address, requestUri, geoCheck, bldgNum, street1, street2, city, county, s
 System.Collections.Generic.List<string> longName = new System.Collections.Generic.List<string>();
 System.Collections.Generic.List<string> type = new System.Collections.Generic.List<string>();
 
-address = Context.Text; // Get the address from the field
+
+if (Context.Field("zip").Text == "")
+{
+    address = Context.Text; // Get the address from the field
+}
+else
+{
+    address = Context.Text + " " + Context.Field("zip"); // Results are better with a zip code and the address field is just the street
+}
 requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
 
 /*
