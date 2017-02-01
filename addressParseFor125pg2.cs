@@ -28,7 +28,7 @@ if (Context.Field("zip").Text == "")
 }
 else
 {
-    address = Context.Text + " " + Context.Field("zip"); // Results are better with a zip code and the address field is just the street
+    address = Context.Text + " " + Context.Field("zip").Text; // Results are better with a zip code and the address field is just the street
 }
 requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
 
