@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Xml;
+using System.IO;
 /*
 strings: 
     Address - the address that was read by ABBYY
@@ -16,11 +21,8 @@ lists:
     type - the list of all pieces of informaton contained between the XML brackets <type>. The elements are the type of part of the address.
 */
 string address, abbyyZIP, requestUri, geoCheck, bldgNum, street1, street2, city, county, state, zip, errorMsg;
-/*
-Note: ABBYY does not recognize things that aren't within what ABBYY understands as the C# standard library for some reason. Therefore, things such as lists and dictionaries must be brought into the world by typing out the whole library path. RW from CASO is aware of this and last time we spoke, still has no idea why this is happening (it's happening on his end as well)
-*/
-System.Collections.Generic.List<string> longName = new System.Collections.Generic.List<string>();
-System.Collections.Generic.List<string> type = new System.Collections.Generic.List<string>();
+List<string> longName = new List<string>();
+List<string> type = new List<string>();
 
 address = Context.Text; // Get the address from the field
 abbyyZIP = Context.Field("zip").Text; // Get whatever is currently in the zip code field, if anything
@@ -46,63 +48,104 @@ if (Context.Text == "" || Context.Text == null)
 else
 {
     // Create a new web request to the Google API
-    System.Net.WebRequest googReq = System.Net.WebRequest.Create(requestUri);
+    WebRequest googReq = WebRequest.Create(requestUri);
     
     // Using the response from that request...
-    using (System.Net.WebResponse googResp = googReq.GetResponse())
+    using (WebResponse googResp = googReq.GetResponse())
     {    
         // Get the information from it using a response stream
-        using (System.IO.Stream xmlStream = googResp.GetResponseStream())
+        using (Stream xmlStream = googResp.GetResponseStream())
         {
             // Instantiate a new XmlDocument and load the data from the data stream using StreamReader
-            System.Xml.XmlDocument googXMLDoc = new System.Xml.XmlDocument();
-            googXMLDoc.Load(new System.IO.StreamReader(xmlStream));
+            XmlDocument googXMLDoc = new XmlDocument();
+            googXMLDoc.Load(new StreamReader(xmlStream));
             
             // There's no way to select a single XML node based on its tag name, so grab everything that makes up the address
             // The contents of all tag groups that start with <address_component>
-            System.Xml.XmlNodeList formattedXML = googXMLDoc.GetElementsByTagName("address_component"); 
+            XmlNodeList formattedXML = googXMLDoc.GetElementsByTagName("address_component"); 
             // The status tag under <GeocodeResponse>
-            System.Xml.XmlNodeList geoRespXML = googXMLDoc.GetElementsByTagName("GeocodeResponse");
+            XmlNodeList geoRespXML = googXMLDoc.GetElementsByTagName("GeocodeResponse");
             // Access the singular node <status>
-            System.Xml.XmlNode resp = geoRespXML[0];
+            XmlNode resp = geoRespXML[0];
             geoCheck = resp["status"].InnerXml.ToString();
             
             // Status check for google. "Ok" means everything is fine and everything will be returned, otherwise not.
             if (geoCheck.ToLower() == "ok")
             {
                 // For each XML node in the XML Node Array "formattedXML"...
-                foreach (System.Xml.XmlNode addressNode in formattedXML)
+                foreach (XmlNode addressNode in formattedXML)
                 {
                     // Add everything associated with the tag "long
                     longName.Add(addressNode["long_name"].InnerXml.ToString());
                     type.Add(addressNode["type"].InnerXml.ToString());
                 }
-
-                int count = type.Count;
-                switch (count)
+                try
                 {
-                    case 9:
-                        street2 = longName[0];
-                        bldgNum = longName[1];
-                        street1 = longName[2];
-                        city = longName[3];
-                        county = longName[5];
-                        state = longName[6];
-                        zip = longName[8];
+                    int count = type.Count;
+                    switch (count)
+                    {
+                        case 9:
+                            street2 = longName[0];
+                            bldgNum = longName[1];
+                            street1 = longName[2];
+                            city = longName[3];
+                            county = longName[5];
+                            state = longName[6];
+                            zip = longName[8];
 
-                        Context.Field("bldgNum").Text = bldgNum;
-                        Context.Field("street1").Text = street1;
-                        Context.Field("street2").Text = street2;
-                        Context.Field("city").Text = city;
-                        Context.Field("county").Text = county;
-                        Context.Field("state").Text = state;
-                        Context.Field("zip").Text = zip;
+                            Context.Field("bldgNum").Text = bldgNum;
+                            Context.Field("street1").Text = street1;
+                            Context.Field("street2").Text = street2;
+                            Context.Field("city").Text = city;
+                            Context.Field("county").Text = county;
+                            Context.Field("state").Text = state;
+                            Context.Field("zip").Text = zip;
 
-                        Context.Field("Address").Text = bldgNum + " " + street1 + ", " + street2 + ", " + city + ", " + county + ", " + state + " " + zip;
-                        break;
-                    case 8:
-                        if (type[7].Contains("postal_code_suffix"))
-                        {
+                            Context.Field("Address").Text = bldgNum + " " + street1 + ", " + street2 + ", " + city + ", " + county + ", " + state + " " + zip;
+                            break;
+                        case 8:
+                            if (type[7].Contains("postal_code_suffix"))
+                            {
+                                street2 = "";
+                                bldgNum = longName[0];
+                                street1 = longName[1];
+                                city = longName[2];
+                                county = longName[3];
+                                state = longName[4];
+                                zip = longName[6];
+
+                                Context.Field("bldgNum").Text = bldgNum;
+                                Context.Field("street1").Text = street1;
+                                Context.Field("street2").Text = street2;
+                                Context.Field("city").Text = city;
+                                Context.Field("county").Text = county;
+                                Context.Field("state").Text = state;
+                                Context.Field("zip").Text = zip;
+
+                                Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
+                            }
+                            else
+                            {
+                                street2 = "";
+                                bldgNum = longName[0];
+                                street1 = longName[1];
+                                city = longName[2];
+                                county = longName[4];
+                                state = longName[5];
+                                zip = longName[7];
+
+                                Context.Field("bldgNum").Text = bldgNum;
+                                Context.Field("street1").Text = street1;
+                                Context.Field("street2").Text = street2;
+                                Context.Field("city").Text = city;
+                                Context.Field("county").Text = county;
+                                Context.Field("state").Text = state;
+                                Context.Field("zip").Text = zip;
+
+                                Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
+                            }
+                            break;
+                        case 7:
                             street2 = "";
                             bldgNum = longName[0];
                             street1 = longName[1];
@@ -120,16 +163,15 @@ else
                             Context.Field("zip").Text = zip;
 
                             Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
-                        }
-                        else
-                        {
+                            break;
+                        default:
                             street2 = "";
                             bldgNum = longName[0];
                             street1 = longName[1];
                             city = longName[2];
-                            county = longName[4];
-                            state = longName[5];
-                            zip = longName[7];
+                            county = longName[3];
+                            state = longName[4];
+                            zip = longName[6];
 
                             Context.Field("bldgNum").Text = bldgNum;
                             Context.Field("street1").Text = street1;
@@ -140,47 +182,13 @@ else
                             Context.Field("zip").Text = zip;
 
                             Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
-                        }
-                        break;
-                    case 7:
-                        street2 = "";
-                        bldgNum = longName[0];
-                        street1 = longName[1];
-                        city = longName[2];
-                        county = longName[3];
-                        state = longName[4];
-                        zip = longName[6];
-
-                        Context.Field("bldgNum").Text = bldgNum;
-                        Context.Field("street1").Text = street1;
-                        Context.Field("street2").Text = street2;
-                        Context.Field("city").Text = city;
-                        Context.Field("county").Text = county;
-                        Context.Field("state").Text = state;
-                        Context.Field("zip").Text = zip;
-
-                        Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
-                        break;
-                    default:
-                        street2 = "";
-                        bldgNum = longName[0];
-                        street1 = longName[1];
-                        city = longName[2];
-                        county = longName[3];
-                        state = longName[4];
-                        zip = longName[6];
-
-                        Context.Field("bldgNum").Text = bldgNum;
-                        Context.Field("street1").Text = street1;
-                        Context.Field("street2").Text = street2;
-                        Context.Field("city").Text = city;
-                        Context.Field("county").Text = county;
-                        Context.Field("state").Text = state;
-                        Context.Field("zip").Text = zip;
-
-                        Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
-                        break;
-                   }             
+                            break;
+                    }    
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    FCTools.ShowMessage("Location already geocoded!");
+                }          
             }
             else
             {
