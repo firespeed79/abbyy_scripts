@@ -82,21 +82,42 @@ else
                     switch (count)
                     {
                         case 9:
-                            street2 = longName[0];
-                            bldgNum = longName[1];
-                            street1 = longName[2];
-                            city = longName[3];
-                            county = longName[5];
-                            state = longName[6];
-                            zip = longName[8];
+                            if (type[8].Contains("postal_code_suffix")) 
+                            {
+                                street2 = "";
+                                bldgNum = longName[0];
+                                street1 = longName[1];
+                                city = longName[3];
+                                county = longName[4];
+                                state = longName[5];
+                                zip = longName[7];
 
-                            Context.Field("bldgNum").Text = bldgNum;
-                            Context.Field("street1").Text = street1;
-                            Context.Field("street2").Text = street2;
-                            Context.Field("city").Text = city;
-                            Context.Field("county").Text = county;
-                            Context.Field("state").Text = state;
-                            Context.Field("zip").Text = zip;
+                                Context.Field("bldgNum").Text = bldgNum;
+                                Context.Field("street1").Text = street1;
+                                Context.Field("street2").Text = street2;
+                                Context.Field("city").Text = city;
+                                Context.Field("county").Text = county;
+                                Context.Field("state").Text = state;
+                                Context.Field("zip").Text = zip;
+                            }
+                            else 
+                            {
+                                street2 = longName[0];
+                                bldgNum = longName[1];
+                                street1 = longName[2];
+                                city = longName[3];
+                                county = longName[5];
+                                state = longName[6];
+                                zip = longName[8];
+
+                                Context.Field("bldgNum").Text = bldgNum;
+                                Context.Field("street1").Text = street1;
+                                Context.Field("street2").Text = street2;
+                                Context.Field("city").Text = city;
+                                Context.Field("county").Text = county;
+                                Context.Field("state").Text = state;
+                                Context.Field("zip").Text = zip;                           
+                            }
                             break;
                         case 8:
                             if (type[7].Contains("postal_code_suffix"))
@@ -145,6 +166,40 @@ else
                             state = longName[4];
                             zip = longName[6];
 
+                            Context.Field("bldgNum").Text = bldgNum;
+                            Context.Field("street1").Text = street1;
+                            Context.Field("street2").Text = street2;
+                            Context.Field("city").Text = city;
+                            Context.Field("county").Text = county;
+                            Context.Field("state").Text = state;
+                            Context.Field("zip").Text = zip;
+                            break;
+                        case 6:
+                            street1 = longName[0];
+                            city = longName[1];
+                            county = longName[2];
+                            state = longName[3];
+                            zip = longName[5];
+                            street2 = "";
+                            bldgNum = "";
+
+                            Context.Field("bldgNum").Text = bldgNum;
+                            Context.Field("street1").Text = street1;
+                            Context.Field("street2").Text = street2;
+                            Context.Field("city").Text = city;
+                            Context.Field("county").Text = county;
+                            Context.Field("state").Text = state;
+                            Context.Field("zip").Text = zip;
+                            break;
+                        case 5:
+                            street1 = longName[0];
+                            city = longName[1];
+                            state = longName[2];
+                            zip = longName[4];
+                            street2 = "";
+                            county = "";
+                            bldgNum = "";
+                            
                             Context.Field("bldgNum").Text = bldgNum;
                             Context.Field("street1").Text = street1;
                             Context.Field("street2").Text = street2;
