@@ -20,7 +20,7 @@ lists:
     longName - the list of all pieces of information contained between the XML brackets <long_name>. The elements are the parts of the address.
     type - the list of all pieces of informaton contained between the XML brackets <type>. The elements are the type of part of the address.
 */
-string address, requestUri, geoCheck, bldgNum, street1, street2, town, county, state, zip, errorMsg;
+string address, requestUri, geoCheck, bldgNum, street1, street2, town, county, state, zip, abbyyZIP errorMsg;
 /*
 Note: ABBYY does not recognize things that aren't within what ABBYY understands as the C# standard library for some reason. Therefore, things such as lists and dictionaries must be brought into the world by typing out the whole library path. RW from CASO is aware of this and last time we spoke, still has no idea why this is happening (it's happening on his end as well)
 */
@@ -28,7 +28,8 @@ List<string> longName = new List<string>();
 List<string> type = new List<string>();
 
 address = Context.Text; // Get the address from the field
-requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
+abbyyZIP = Context.Field("zip").Text; // Get the zip code
+requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address + " " + zip; // Build the API url
 /*
     If the field is blank, display a warning. Simplistic since so long as there's a best guess and a zip, Google will try to handle it.
 */

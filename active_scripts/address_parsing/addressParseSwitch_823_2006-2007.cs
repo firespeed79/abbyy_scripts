@@ -19,12 +19,13 @@ lists:
     longName - the list of all pieces of information contained between the XML brackets <long_name>. The elements are the parts of the address.
     type - the list of all pieces of informaton contained between the XML brackets <type>. The elements are the type of part of the address.
 */
-string address, requestUri, geoCheck, bldgNum, street1, street2, town, county, state, zip, errorMsg;
-System.Collections.Generic.List<string> longName = new System.Collections.Generic.List<string>();
-System.Collections.Generic.List<string> type = new System.Collections.Generic.List<string>();
+string address, requestUri, geoCheck, bldgNum, street1, street2, town, county, state, zip, abbyyZIP, errorMsg;
+List<string> longName = new List<string>();
+List<string> type = new List<string>();
 
 address = Context.Text; // Get the address from the field
-requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
+abbyyZIP = Context.Field("zip")Text; // Get the zip code because I should have sent address + zip from the start 
+requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address + " " + zip; // Build the API url
 /*
     If the field is blank, display a warning. Simplistic since so long as there's a best guess and a zip, Google will try to handle it.
 */
@@ -168,6 +169,25 @@ else
                             Context.Field("zip").Text = zip;
 
                             Context.Field("Address").Text = bldgNum + " " + street1 + ", " + city + ", " + county + ", " + state + " " + zip;
+                            break;
+                        case 6:
+                            street1 = longName[0];
+                            city = longName[1];
+                            county = longName[2];
+                            state = longName[3];
+                            zip = longName[5];
+                            street2 = "";
+                            bldgNum = "";
+
+                            Context.Field("bldgNum").Text = bldgNum;
+                            Context.Field("street1").Text = street1;
+                            Context.Field("street2").Text = street2;
+                            Context.Field("city").Text = city;
+                            Context.Field("county").Text = county;
+                            Context.Field("state").Text = state;
+                            Context.Field("zip").Text = zip;
+                            
+                            Context.Field("Address").Text = street1 + ", " + city + ", " + state + " " + zip;
                             break;
                         case 5:
                             street1 = longName[0];
