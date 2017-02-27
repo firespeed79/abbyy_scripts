@@ -23,9 +23,15 @@ string address, requestUri, geoCheck, bldgNum, street1, street2, town, county, s
 List<string> longName = new List<string>();
 List<string> type = new List<string>();
 
-address = Context.Text; // Get the address from the field
-abbyyZIP = Context.Field("zip")Text; // Get the zip code because I should have sent address + zip from the start 
-requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address + " " + zip; // Build the API url
+if (Context.Field("zip").Text == "")
+{
+    address = Context.Text; // Get the address from the field
+}
+else
+{
+    address = Context.Text + " " + Context.Field("zip").Text; // Results are better with a zip code and the address field is just the street
+}
+requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
 /*
     If the field is blank, display a warning. Simplistic since so long as there's a best guess and a zip, Google will try to handle it.
 */

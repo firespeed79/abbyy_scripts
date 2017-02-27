@@ -8,17 +8,15 @@ string address, abbyyZIP, requestUri, geoCheck, bldgNum, street1, street2, city,
 List<string> longName = new List<string>();
 List<string> type = new List<string>();
 
-address = Context.Text; // Get the address from the field
-abbyyZIP = Context.Field("zip").Text; // Get whatever is currently in the zip code field, if anything
-
-if (abbyyZIP == "")
+if (Context.Field("zip").Text == "")
 {
-    requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
+    address = Context.Text; // Get the address from the field
 }
 else
 {
-    requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address + " " + abbyyZIP; // Build the API url
+    address = Context.Text + " " + Context.Field("zip").Text; // Results are better with a zip code and the address field is just the street
 }
+requestUri = "https://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + address; // Build the API url
 
 if (Context.Text == "" || Context.Text == null)
 {

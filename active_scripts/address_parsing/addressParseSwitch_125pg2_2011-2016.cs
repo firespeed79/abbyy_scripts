@@ -229,7 +229,7 @@ else
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    FCTools.ShowMessage("Location already geocoded!");
+                    FCTools.ShowMessage("Location not geocoded!");
                 }              
             }
             else
