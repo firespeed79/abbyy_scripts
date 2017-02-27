@@ -16,9 +16,13 @@ Custom feature development in C# for the ABBYY Flexicapture software by [myself]
 │       addressParseUsingSwitch.cs
 │
 ├───visual_studio_tests
-│       addressParseBySubpremise.cs
-│       addressParseBySwitchCase.cs
-│       addressParseUsingSubstring.cs
+│   │   driver.cs
+│   │
+│   └───test_classes
+│           addressParseBySubpremise.cs
+│           addressParseBySwitchCase.cs
+│           addressParseUsingSubstring.cs
+│           substring.cs
 │
 └───active_scripts
     │   convert_constType_to_int.cs
@@ -26,6 +30,7 @@ Custom feature development in C# for the ABBYY Flexicapture software by [myself]
     │   protection_class.cs
     │   sprnkDropdown.cs
     │   yearBuilt.cs
+    │   building_number_snip_and_copy.cs
     │
     └───address_parsing
             addressParseSwitch_125pg2_2005-2007.cs
