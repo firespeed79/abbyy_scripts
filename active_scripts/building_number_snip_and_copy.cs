@@ -4,7 +4,7 @@ int space, dash, number;
 bool isNumber;
 string address, bldgNums, testCase;
 
-address = Context.Field("rawstreet").Text;
+address = Context.Field("rawStreet").Text;
 space = address.IndexOf(" ");
 
 bldgNums = address.Substring(0, space);
@@ -16,22 +16,22 @@ try
     
     if (isNumber)
     {
-        Context.Field("physBldgNum").Text = bldgNums;
+        Context.Field("physBldg").Text = bldgNums;
     }
     else
     {
-        Context.Field("physBldgNum").Text = "";
+        Context.Field("physBldg").Text = "";
     }
 }
 catch (ArgumentOutOfRangeException)
 {
     if (dash == -1)
     {
-        Context.Field("physBldgNum").Text = bldgNums;
+        Context.Field("physBldg").Text = bldgNums;
     }
     else
     {
-        Context.Field("physBldgNum").Text = "";
+        Context.Field("physBldg").Text = "";
     }
 }
 

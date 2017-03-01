@@ -1,15 +1,18 @@
-string emailSubject = Context.Field("CtrlNum").Text;
-FCTools.ShowMessage(emailSubject);  
+using System;
 
-int openBracket = emailSubject.IndexOf('[');
-int closeBracket = emailSubject.IndexOf(']');
-
-if (emailSubject == null)
+if(Context.Field("ctrlNum").Text == "")
 {
-  FCTools.ShowMessage("Subject length = 0 chars!");  
-}
-else
-{
-  string ctrlNum = emailSubject.Substring(openBracket + 1, (closeBracket - openBracket) - 1); 
-    Context.Field("CtrlNum").Value = ctrlNum;
+    string ctrlNum = Context.Field("subjLine").Text;
+ 
+    int openBracket = ctrlNum.IndexOf('[');
+    int closeBracket = ctrlNum.IndexOf(']');
+    try
+    {
+          ctrlNum = ctrlNum.Substring(openBracket + 1, (closeBracket - openBracket) - 1); 
+          Context.Field("ctrlNum").Value = ctrlNum;
+    }
+    catch (ArgumentOutOfRangeException)
+    {
+        Context.Field("ctrlNum").Value = "";
+    }
 }

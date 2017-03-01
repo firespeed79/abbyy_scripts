@@ -21,9 +21,7 @@ lists:
     type - the list of all pieces of informaton contained between the XML brackets <type>. The elements are the type of part of the address.
 */
 string address, requestUri, geoCheck, bldgNum, street1, street2, city, county, state, zip, abbyyZIP errorMsg;
-/*
-Note: ABBYY does not recognize things that aren't within what ABBYY understands as the C# standard library for some reason. Therefore, things such as lists and dictionaries must be brought into the world by typing out the whole library path. RW from CASO is aware of this and last time we spoke, still has no idea why this is happening (it's happening on his end as well)
-*/
+
 List<string> longName = new List<string>();
 List<string> type = new List<string>();
 

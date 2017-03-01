@@ -1,6 +1,10 @@
 # abbyy_scripts
 Custom feature development in C# for the ABBYY Flexicapture software by [myself](https://github.com/jmarkman) and [Alfred Long](https://github.com/along88)
 
+## [The Wiki](https://github.com/jmarkman/abbyy_scripts/wiki)
+Some other company is going to use ABBYY at some point, and I might be a part of it.
+Best to have a wiki ready to go just in case.
+
 ### Navigation
 ```
 │   LICENSE
