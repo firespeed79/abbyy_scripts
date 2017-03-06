@@ -20,9 +20,7 @@ lists:
     type - the list of all pieces of informaton contained between the XML brackets <type>. The elements are the type of part of the address.
 */
 string address, requestUri, geoCheck, bldgNum, street1, street2, city, county, state, zip, errorMsg;
-/*
-Note: ABBYY does not recognize things that aren't within what ABBYY understands as the C# standard library for some reason. Therefore, things such as lists and dictionaries must be brought into the world by typing out the whole library path. RW from CASO is aware of this and last time we spoke, still has no idea why this is happening (it's happening on his end as well)
-*/
+
 List<string> longName = new List<string>();
 List<string> type = new List<string>();
 
@@ -72,7 +70,7 @@ else
                 // For each XML node in the XML Node Array "formattedXML"...
                 foreach (XmlNode addressNode in formattedXML)
                 {
-                    // Add everything associated with the tag "long
+                    // Add everything associated with the tag "long"
                     longName.Add(addressNode["long_name"].InnerXml.ToString());
                     type.Add(addressNode["type"].InnerXml.ToString());
                 }
@@ -92,9 +90,9 @@ else
                                 state = longName[5];
                                 zip = longName[7];
 
-                                Context.Field("bldgNum").Text = bldgNum;
-                                Context.Field("street1").Text = street1;
-                                Context.Field("street2").Text = street2;
+                                Context.Field("singleBldg").Text = bldgNum;
+                                Context.Field("st1").Text = street1;
+                                Context.Field("st2").Text = street2;
                                 Context.Field("city").Text = city;
                                 Context.Field("county").Text = county;
                                 Context.Field("state").Text = state;
@@ -110,9 +108,9 @@ else
                                 state = longName[6];
                                 zip = longName[8];
 
-                                Context.Field("bldgNum").Text = bldgNum;
-                                Context.Field("street1").Text = street1;
-                                Context.Field("street2").Text = street2;
+                                Context.Field("singleBldg").Text = bldgNum;
+                                Context.Field("st1").Text = street1;
+                                Context.Field("st2").Text = street2;
                                 Context.Field("city").Text = city;
                                 Context.Field("county").Text = county;
                                 Context.Field("state").Text = state;
@@ -130,9 +128,9 @@ else
                                 state = longName[4];
                                 zip = longName[6];
 
-                                Context.Field("bldgNum").Text = bldgNum;
-                                Context.Field("street1").Text = street1;
-                                Context.Field("street2").Text = street2;
+                                Context.Field("singleBldg").Text = bldgNum;
+                                Context.Field("st1").Text = street1;
+                                Context.Field("st2").Text = street2;
                                 Context.Field("city").Text = city;
                                 Context.Field("county").Text = county;
                                 Context.Field("state").Text = state;
@@ -148,9 +146,9 @@ else
                                 state = longName[5];
                                 zip = longName[7];
 
-                                Context.Field("bldgNum").Text = bldgNum;
-                                Context.Field("street1").Text = street1;
-                                Context.Field("street2").Text = street2;
+                                Context.Field("singleBldg").Text = bldgNum;
+                                Context.Field("st1").Text = street1;
+                                Context.Field("st2").Text = street2;
                                 Context.Field("city").Text = city;
                                 Context.Field("county").Text = county;
                                 Context.Field("state").Text = state;
@@ -166,9 +164,9 @@ else
                             state = longName[4];
                             zip = longName[6];
 
-                            Context.Field("bldgNum").Text = bldgNum;
-                            Context.Field("street1").Text = street1;
-                            Context.Field("street2").Text = street2;
+                            Context.Field("singleBldg").Text = bldgNum;
+                            Context.Field("st1").Text = street1;
+                            Context.Field("st2").Text = street2;
                             Context.Field("city").Text = city;
                             Context.Field("county").Text = county;
                             Context.Field("state").Text = state;
@@ -183,9 +181,9 @@ else
                             street2 = "";
                             bldgNum = "";
 
-                            Context.Field("bldgNum").Text = bldgNum;
-                            Context.Field("street1").Text = street1;
-                            Context.Field("street2").Text = street2;
+                            Context.Field("singleBldg").Text = bldgNum;
+                            Context.Field("st1").Text = street1;
+                            Context.Field("st2").Text = street2;
                             Context.Field("city").Text = city;
                             Context.Field("county").Text = county;
                             Context.Field("state").Text = state;
@@ -200,9 +198,9 @@ else
                             county = "";
                             bldgNum = "";
                             
-                            Context.Field("bldgNum").Text = bldgNum;
-                            Context.Field("street1").Text = street1;
-                            Context.Field("street2").Text = street2;
+                            Context.Field("singleBldg").Text = bldgNum;
+                            Context.Field("st1").Text = street1;
+                            Context.Field("st2").Text = street2;
                             Context.Field("city").Text = city;
                             Context.Field("county").Text = county;
                             Context.Field("state").Text = state;
@@ -217,9 +215,9 @@ else
                             state = longName[4];
                             zip = longName[6];
 
-                            Context.Field("bldgNum").Text = bldgNum;
-                            Context.Field("street1").Text = street1;
-                            Context.Field("street2").Text = street2;
+                            Context.Field("singleBldg").Text = bldgNum;
+                            Context.Field("st1").Text = street1;
+                            Context.Field("st2").Text = street2;
                             Context.Field("city").Text = city;
                             Context.Field("county").Text = county;
                             Context.Field("state").Text = state;
