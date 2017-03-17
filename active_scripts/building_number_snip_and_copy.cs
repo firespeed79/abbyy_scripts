@@ -7,31 +7,35 @@ string address, bldgNums, testCase;
 address = Context.Field("rawStreet").Text;
 space = address.IndexOf(" ");
 
-bldgNums = address.Substring(0, space);
-dash = bldgNums.IndexOf('-');
-try
-{   
-    testCase = bldgNums.Substring(0, dash);
-    isNumber = Int32.TryParse(testCase, out number);
-    
-    if (isNumber)
-    {
-        Context.Field("physBldg").Text = bldgNums;
-    }
-    else
-    {
-        Context.Field("physBldg").Text = "";
-    }
-}
-catch (ArgumentOutOfRangeException)
+if (Context.Field("rawStreet").Text == "")
+    return;
+else
 {
-    if (dash == -1)
-    {
-        Context.Field("physBldg").Text = bldgNums;
+    bldgNums = address.Substring(0, space);
+    dash = bldgNums.IndexOf('-');
+    try
+    {   
+        testCase = bldgNums.Substring(0, dash);
+        isNumber = Int32.TryParse(testCase, out number);
+        
+        if (isNumber)
+        {
+            Context.Field("physBldg").Text = bldgNums;
+        }
+        else
+        {
+            Context.Field("physBldg").Text = "";
+        }
     }
-    else
+    catch (ArgumentOutOfRangeException)
     {
-        Context.Field("physBldg").Text = "";
+        if (dash == -1)
+        {
+            Context.Field("physBldg").Text = bldgNums;
+        }
+        else
+        {
+            Context.Field("physBldg").Text = "";
+        }
     }
 }
-

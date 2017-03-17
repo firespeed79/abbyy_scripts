@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+
 // Create dictionary of as many known/seen construction type input values as possible
-System.Collections.Generic.Dictionary<string, int> isoType = new System.Collections.Generic.Dictionary<string, int>();
+Dictionary<string, int> isoType = new Dictionary<string, int>();
 /*
  * ISO Construction Type: Modified Fire Resistive
  * ISO Number: 5
@@ -89,10 +91,12 @@ System.Collections.Generic.Dictionary<string, int> isoType = new System.Collecti
     isoType.Add("fire resist", 1);
     isoType.Add("wind resistive", 1);
     isoType.Add("fire resistiv", 1);
-    isoType.Add("fr", 1);
+Using     isoType.Add("fr", 1);
     
-string constType = Context.Text;
-foreach (System.Collections.Generic.KeyValuePair<string, int> pair in isoType)
+string co
+
+nstType = Context.Text;
+foreach (KeyValuePair<string, int> pair in isoType)
 {
     if (constType.ToLower() == pair.Key)
     {  
